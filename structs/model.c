@@ -132,6 +132,7 @@ void model_print(MODEL_STRUCT *model, int nmodels, int myid){
             }
             printf("\n");
         }
+#ifdef _MPI
         printf("\tProcessor %i: interaction_stiffness (matrix):\n", myid);
         for (j=0;j<model[i].Interior_nodes;j++){
             printf("Row %10i:", j);
@@ -149,15 +150,17 @@ void model_print(MODEL_STRUCT *model, int nmodels, int myid){
             }
             printf("\n");
         }
-
+#endif
         printf("\tProcessor %i: interior_forcing (vector):\n", myid);
         for (j=0;j<model[i].Interior_nodes; j++){
             printf("Row %10i:\t%.4e\n", j, model[i].interior_forcing[j]);
         }
+#ifdef _MPI
         printf("\tProcessor %i: constrained_forcing (vector):\n", myid);
         for (j=0;j<model[i].Interior_boundary_nodes; j++){
             printf("Row %10i:\t%.4e\n", j, model[i].constrained_forcing[j]);
         }
+#endif
     }
 }
 

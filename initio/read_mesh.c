@@ -9,9 +9,9 @@ void read_mesh(MODEL_STRUCT **mod, int myid, int numprocs, char *model_name)
     MODEL_STRUCT *model;
     model = *mod;
     model->Interior_nodes = 0;
-    model->Interior_boundary_nodes = 0;
 
 #ifdef _MPI
+    model->Interior_boundary_nodes = 0;
     sprintf(part_filename,"%s_part_%d.2dm",model_name,myid);
 #else
     sprintf(part_filename,"%s.2dm",model_name);

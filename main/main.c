@@ -118,7 +118,9 @@ void main_finalize(MODEL_STRUCT *model, int nmodels, int myid, int numprocs)
 {
 
 //////////////////////////////////////////
-    MPI_Barrier(MPI_COMM_WORLD) ;
+#ifdef _MPI
+    MPI_Barrier(MPI_COMM_WORLD);
+#endif
 //////////////////////////////////////////
 
     printf("\n*****************************************************\n");
