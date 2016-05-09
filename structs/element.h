@@ -1,8 +1,8 @@
 typedef struct {
-    int node[2];
+//    int global_id;
+    int vertex[3];
+    int procnum;
     double area;
-    double length;
-    double E;         /* Material Young's Modulus */
-    double **K;   /* Element Stiffness Matrix, 4x4 for 2D */
-    double *F;
-} ELEMENT;
+//    double **K;   /* Element Stiffness Matrix, 4x4 for 2D */
+//    double *F;
+} ELEMENT_STRUCT;

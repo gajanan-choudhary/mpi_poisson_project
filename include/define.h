@@ -8,10 +8,9 @@
 #include <stddef.h>
 #include <limits.h>
 
-#ifdef D_MPI
-    #include <mpi.h>
-#endif
-
+/*Dimension of the problem*/
+#define ndim 2
+#define NDONTRI 3
 
 #define MAXLINE 300
 
