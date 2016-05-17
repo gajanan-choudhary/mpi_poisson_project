@@ -99,10 +99,15 @@ void main_run(MODEL_STRUCT *model, int nmodels, int myid, int numprocs)
     for (i=0; i<nmodels; i++){
         model_alloc_matrices(&(model[i]));
         model_build_system(&(model[i]));
-        ierr = parallel_conjugate_gradient(&(model[i]), myid, numprocs, 1e-4, 20);
         // Printing initial data
         model_print(&(model[i]), 1, myid);
+
+        printf("\n*******************************************\n");
+        printf("Solving the system using conjugate gradient iterations\n");
+        printf("*******************************************\n\n");
+        ierr = parallel_conjugate_gradient(&(model[i]), myid, numprocs, 1e-4, 20);
 //        for (j=0; j<1000000; j++){ /* Do Nothing! */}
+        printf("\nProcessor %i printing solution below:\n", myid);
         for (j=0; j<model[i].nnodes; j++){
             if (model[i].nodes[j].type == 1){
                 printf("Proc %i: %f %f %f\n", myid, model[i].nodes[j].xy[0],

@@ -1,0 +1,376 @@
+
+*****************************************************
+Main initializing
+Reading input
+
+
+*****************************************************
+Main initializing
+Reading input
+*****************************************************
+Main initializing
+Reading input
+
+*****************************************************
+Starting program run
+*****************************************************
+
+*****************************************************
+Main initializing
+Reading input
+Processor 1:
+	Interior nodes = 1
+	Interior Boundary nodes =          3
+
+*****************************************************
+Main running
+
+Processor 1: Model[0] data below:
+	Number of nodes    : 9
+	Number of elements : 8
+	Processor 1: Node Data
+		|   Node    |   Type    |     X coordinate     |     Y coordinate     |
+Processor 3:
+	Interior nodes = 1
+	Interior Boundary nodes =          3
+
+*****************************************************
+		|          0|          0| 5.000000000000000e-01| 0.000000000000000e+00|
+		|          1|          0| 7.500000000000000e-01| 0.000000000000000e+00|
+		|          2|          2| 5.000000000000000e-01| 2.500000000000000e-01|
+		|          3|          1| 7.500000000000000e-01| 2.500000000000000e-01|
+Main running
+
+Processor 3: Model[0] data below:
+	Number of nodes    : 9
+		|          4|          0| 1.000000000000000e+00| 0.000000000000000e+00|
+		Number of elements : 8
+	Processor 3: Node Data
+		|   Node    |   Type    |     X coordinate     |     Y coordinate     |
+	|          5|          0| 1.000000000000000e+00| 2.500000000000000e-01|
+		|          6|          4| 5.000000000000000e-01| 5.000000000000000e-01|
+				|          0|          4| 5.000000000000000e-01| 5.000000000000000e-01|
+	|          7|          2| 7.500000000000000e-01| 5.000000000000000e-01|
+		|          8|          0| 1.000000000000000e+00| 5.000000000000000e-01|
+		|          1|          2| 7.500000000000000e-01| 5.000000000000000e-01|
+		|          2|          2| 5.000000000000000e-01| 7.500000000000000e-01|
+		|          3|          1| 7.500000000000000e-01| 7.500000000000000e-01|
+		|          4|          0| 1.000000000000000e+00| 5.000000000000000e-01|
+		|          5|          0| 1.000000000000000e+00| 7.500000000000000e-01|
+		|          6|          0| 5.000000000000000e-01| 1.000000000000000e+00|
+		|          7|          0| 7.500000000000000e-01| 1.000000000000000e+00|
+		|          8|          0| 1.000000000000000e+00| 1.000000000000000e+00|
+	Processsor 3:Element Data
+		|  Element  | Vertex 0  | Vertex 1  | Vertex 2  |         Area         | Processor |
+		|          0|          0|          1|          2| 3.125000000000000e-02|          3|
+		|          1|          2|          1|          3| 3.125000000000000e-02|          3|
+		|          2|          1|          4|          3| 3.125000000000000e-02|          3|
+		|          3|          3|          4|          5| 3.125000000000000e-02|          3|
+		Processsor 1:Element Data
+		|  Element  | Vertex 0  | Vertex 1  | Vertex 2  |         Area         | Processor |
+		|          0|          0|          1|          2| 3.125000000000000e-02|          1|
+		|          1|          2|          1|          3| 3.125000000000000e-02|          1|
+		|          2|          1|          4|          3| 3.125000000000000e-02|          1|
+		|          3|          3|          4|          5| 3.125000000000000e-02|          1|
+		|          4|          2|          3|          6| 3.125000000000000e-02|          1|
+		|          5|          6|          3|          7| 3.125000000000000e-02|          1|
+		|          6|          3|          5|          7| 3.125000000000000e-02|          1|
+		|          7|          7|          5|          8| 3.125000000000000e-02|          1|
+	Processor 1: interior_stiffness (matrix):
+Row          0:	4.0000e+00
+	Processor 1: interaction_stiffness (matrix):
+Row          0:	-1.0000e+00	0.0000e+00	-1.0000e+00
+	Processor 0:
+	Interior nodes = 1
+	Interior Boundary nodes =          3
+|          4|          2|          3|          6| 3.125000000000000e-02|          3|
+		|          5|          6|          3|          7| 3.125000000000000e-02|          3|
+		|          6|          3|          5|          7| 3.125000000000000e-02|          3|
+		|          7|          7|          5|          8| 3.125000000000000e-02|          3|
+Processor 1: constrained_stiffness (matrix):
+Row          0:	2.0000e+00	-5.0000e-01	0.0000e+00
+Row          1:	-5.0000e-01	1.0000e+00	-5.0000e-01
+Row          2:	Processor 3: interior_stiffness (matrix):
+Row          0:	4.0000e+00
+	Processor 3: interaction_stiffness (matrix):
+Row          0:
+*****************************************************
+Main running
+
+Processor 0: Model[0] data below:
+	Number of nodes    : 9
+	Number of elements : 8
+	0.0000e+00	-5.0000e-01	2.0000e+00
+	Processor 1: interior_forcing (vector):
+Row          0:	2.0000e+00
+	Processor 1: constrained_forcing (vector):
+Row          0:	2.5000e-01
+Row          1:	0.0000e+00
+Row          2:		Processor 0: Node Data
+		|   Node    |   Type    |     X coordinate     |     Y coordinate     |
+		|          0|          0| 0.000000000000000e+00| 0.000000000000000e+00|
+		0.0000e+00	-1.0000e+00	-1.0000e+00
+	Processor 3: constrained_stiffness (matrix):
+Row          0:	1.0000e+00	-5.0000e-01	-5.0000e-01
+Row          1:	-5.0000e-01	2.0000e+00	|          1|          0| 2.500000000000000e-01| 0.000000000000000e+00|
+		|          2|          0| 0.000000000000000e+00| 2.500000000000000e-01|
+		|          3|          1| 2.500000000000000e-01| 2.500000000000000e-01|
+		|          4|          0| 5.000000000000000e-01| 0.000000000000000e+00|
+		|          5|          2| 5.000000000000000e-01| 2.500000000000000e-01|
+	0.0000e+00
+Row          2:	-5.0000e-01	0.0000e+00	2.0000e+00
+	Processor 3: interior_forcing (vector):
+Row          0:	3.5000e+00
+	Processor 3: constrained_forcing (vector):
+Row          0:	0.0000e+00
+Row          1:	7.5000e-01
+7.5000e-01
+
+*******************************************
+Solving the system using conjugate gradient iterations
+*******************************************
+
+Row          2:	7.5000e-01
+
+*******************************************
+Solving the system using conjugate gradient iterations
+		|          6|          0| 0.000000000000000e+00| 5.000000000000000e-01|
+		|          7|          2| 2.500000000000000e-01| 5.000000000000000e-01|
+		|          8|          4| 5.000000000000000e-01| 5.000000000000000e-01|
+	Processsor 0:Element Data
+		|  Element  | Vertex 0  | Vertex 1  | Vertex 2  |         Area         | Processor |
+		|          0|          0|          1|          2| 3.125000000000000e-02|          0|
+		|          1|          2|          1|          3| 3.125000000000000e-02|          0|
+		*******************************************
+
+|          2|          1|          4|          3| 3.125000000000000e-02|          0|
+		|          3|          3|          4|          5| 3.125000000000000e-02|          0|
+		|          4|          2|          3|          6| 3.125000000000000e-02|          0|
+		|          5|          6|          3|          7| 3.125000000000000e-02|          0|
+		|          6|          3|          5|          7| 3.125000000000000e-02|          0|
+		|          7|          7|          5|          8| 3.125000000000000e-02|          0|
+	Processor 0: interior_stiffness (matrix):
+Row          0:	4.0000e+00
+	Processor 0: interaction_stiffness (matrix):
+Row          0:	-1.0000e+00	-1.0000e+00	0.0000e+00
+	Processor 0: constrained_stiffness (matrix):
+Row          0:	2.0000e+00	0.0000e+00	-5.0000e-01
+Row          1:	0.0000e+00	2.0000e+00	-5.0000e-01
+Row          2:	-5.0000e-01	-5.0000e-01	1.0000e+00
+	Processor 0: interior_forcing (vector):
+Row          0:	5.0000e-01
+	Processor 0: constrained_forcing (vector):
+Row          0:	2.5000e-01
+Row          1:	2.5000e-01
+Row          2:	0.0000e+00
+
+*******************************************
+Solving the system using conjugate gradient iterations
+*******************************************
+
+Processor 2:
+	Interior nodes = 1
+	Interior Boundary nodes =          3
+
+*****************************************************
+Main running
+
+Processor 2: Model[0] data below:
+	Number of nodes    : 9
+	Number of elements : 8
+	Processor 2: Node Data
+		|   Node    |   Type    |     X coordinate     |     Y coordinate     |
+		|          0|          0| 0.000000000000000e+00| 5.000000000000000e-01|
+		|          1|          2| 2.500000000000000e-01| 5.000000000000000e-01|
+		|          2|          0| 0.000000000000000e+00| 7.500000000000000e-01|
+		|          3|          1| 2.500000000000000e-01| 7.500000000000000e-01|
+		|          4|          4| 5.000000000000000e-01| 5.000000000000000e-01|
+		|          5|          2| 5.000000000000000e-01| 7.500000000000000e-01|
+		|          6|          0| 0.000000000000000e+00| 1.000000000000000e+00|
+		|          7|          0| 2.500000000000000e-01| 1.000000000000000e+00|
+		|          8|          0| 5.000000000000000e-01| 1.000000000000000e+00|
+	Processsor 2:Element Data
+		|  Element  | Vertex 0  | Vertex 1  | Vertex 2  |         Area         | Processor |
+		|          0|          0|          1|          2| 3.125000000000000e-02|          2|
+		|          1|          2|          1|          3| 3.125000000000000e-02|          2|
+		|          2|          1|          4|          3| 3.125000000000000e-02|          2|
+		|          3|          3|          4|          5| 3.125000000000000e-02|          2|
+		|          4|          2|          3|          6| 3.125000000000000e-02|          2|
+		|          5|          6|          3|          7| 3.125000000000000e-02|          2|
+		|          6|          3|          5|          7| 3.125000000000000e-02|          2|
+		|          7|          7|          5|          8| 3.125000000000000e-02|          2|
+	Processor 2: interior_stiffness (matrix):
+Row          0:	4.0000e+00
+	Processor 2: interaction_stiffness (matrix):
+Row          0:	-1.0000e+00	0.0000e+00	-1.0000e+00
+	Processor 2: constrained_stiffness (matrix):
+Row          0:	2.0000e+00	-5.0000e-01	0.0000e+00
+Row          1:	-5.0000e-01	1.0000e+00	-5.0000e-01
+Row          2:	0.0000e+00	-5.0000e-01	2.0000e+00
+	Processor 2: interior_forcing (vector):
+Row          0:	2.0000e+00
+	Processor 2: constrained_forcing (vector):
+Row          0:	2.5000e-01
+Row          1:	0.0000e+00
+Row          2:	7.5000e-01
+
+*******************************************
+Solving the system using conjugate gradient iterations
+*******************************************
+
+
+
+Gamma = 22.968750
+
+
+
+Gamma = 73.481634 (k = 0)
+
+
+
+Gamma = 641.750959 (k = 1)
+
+
+
+Gamma = 41475.374715 (k = 2)
+
+
+
+Gamma = 172375774.091199 (k = 3)
+
+
+
+Gamma = 2977674270469109.500000 (k = 4)
+
+
+
+Gamma = 888544349692232480069192253440.000000 (k = 5)
+
+
+
+Gamma = 79119393956930567096267924113249911937055030833739246600192.000000 (k = 6)
+
+
+
+Gamma = 627322171159265155264037121072020692570521460938834632875379638527093835299473856173144901448306222552445169736613888.000000 (k = 7)
+
+
+
+Gamma = 39437193987555962103922830004420374719388941091912637938272328895494438665053674229829049684840254344471300023285558385961885209009358113889697293099694967688046910768355324515624416031279562126329458866662861410052660941747658948608.000000 (k = 8)
+
+
+
+Gamma = -nan (k = 9)
+
+
+
+Gamma = -nan (k = 10)
+
+
+
+Gamma = -nan (k = 11)
+
+
+
+Gamma = -nan (k = 12)
+
+
+
+Gamma = -nan (k = 13)
+
+
+
+Gamma = -nan (k = 14)
+
+
+
+Gamma = -nan (k = 15)
+
+
+
+Gamma = -nan (k = 16)
+
+
+
+Gamma = -nan (k = 17)
+
+
+
+Gamma = -nan (k = 18)
+
+
+
+Processor 1 printing solution below:
+Proc 1: 0.500000 0.250000 -nan
+
+Processor 3 printing solution below:
+Proc 3: 0.500000 0.500000 -nan
+Proc 3: 0.750000 0.500000 -nan
+
+
+Gamma = -nan (k = 19)
+
+
+Processor 0 printing solution below:
+Proc 0: 0.250000 0.250000 -nan
+Proc 0: 0.500000 0.250000 -nan
+Proc 0: 0.250000 0.500000 -nan
+Proc 3: 0.500000 0.750000 -nan
+Proc 3: 0.750000 0.750000 -nan
+Processor 2 printing solution below:
+Proc 1: 0.750000 0.250000 -nan
+Proc 1: 0.500000 0.500000 -nan
+Proc 1: 0.750000 0.500000 -nan
+
+
+
+Warning! CG iterations failed to converge!
+
+
+
+Proc 0: 0.500000 0.500000 -nan
+
+
+
+Warning! CG iterations failed to converge!
+
+
+
+
+
+
+Warning! CG iterations failed to converge!
+
+
+
+Proc 2: 0.250000 0.500000 -nan
+Proc 2: 0.250000 0.750000 -nan
+Proc 2: 0.500000 0.500000 -nan
+Proc 2: 0.500000 0.750000 -nan
+
+
+
+Warning! CG iterations failed to converge!
+
+
+
+
+*****************************************************
+Main Finalizing
+All data freed.
+
+*****************************************************
+Main Finalizing
+All data freed.
+
+*****************************************************
+Main Finalizing
+All data freed.
+
+*****************************************************
+Main Finalizing
+All data freed.
+
+*****************************************************
+Program ended successfully
+*****************************************************

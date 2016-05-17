@@ -1,1 +1,1 @@
-rm Makefile cmake_install.cmake CMakeCache.txt && rm -r bin/ CMakeFiles/ initio/ lib/ main/ solver/ structs/
+rm Makefile cmake_install.cmake CMakeCache.txt bin/main && rm -r CMakeFiles/ initio/ lib/ main/ solver/ structs/
