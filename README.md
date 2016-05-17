@@ -12,14 +12,14 @@
      SERIAL:    "cmake -DUSE_MPI=OFF ..", followed by "make"
      PARALLEL:  "cmake -DUSE_MPI=ON  ..", followed by "make"
 * The binary is built in the file <source_dir>/CMAKE/bin with the name "main"
-* To run the binary, just type "./main <filename>" in the command line without the ".2dm" and " _ part _ #.2dm" at the end for serial and parallel runs, respectively
+* To run the binary, just type "./main <filename>" in the command line without the ".2dm" and "\_part\_#.2dm" at the end for serial and parallel runs, respectively
 
 ### Example parallel run with 4 nodes on a personal computer ###
 * go to CMAKE/
-* run "cmake -DUSEi _ MPI=ON .."
+* run "cmake -DUSE\_MPI=ON .."
 * run "make"
 * go to CMAKE/bin/
-* run "mpirun -np 4 ./main simple _ square"
+* run "mpirun -np 4 ./main simple\_square"
 * Checkout the results
 
 
@@ -29,6 +29,6 @@
 * structs/  contains the node, element, and model structs
 * initio/   contains files for reading the input in serial or parallel
 * solver/   contains the conjugate gradient solver function and helper functions
-* testcase/ contains 2 serial programs "create _ mesh" and "partition _ mesh" for creating and partitioning a square domain
+* testcase/ contains 2 serial programs "create\_mesh" and "partition\_mesh" for creating and partitioning a square domain
 * CMAKE/    is the folder intended for compiling the program (you may make another folder)
 * CMAKE/bin contains 2 sample input files for serial and parallel runs
