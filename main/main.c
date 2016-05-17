@@ -92,31 +92,40 @@ void main_initialize(MODEL_STRUCT *model, int nmodels, char *model_name, int myi
 /***********************************************************************************************************************************************************************/
 void main_run(MODEL_STRUCT *model, int nmodels, int myid, int numprocs)
 {
-    int i, j;
+    int i, j, ierr;
     printf("\n*****************************************************\n");
     printf("Main running\n");
-
-//    for (i=0; i<nmodels; i++){
-//        model[i].stiffness_matrix        = (double **) malloc(model->nnodes*ndim*sizeof(double *));
-//        for(j=0; j<model->nnodes*ndim; j++){
-//            model[i].stiffness_matrix[j] = (double *)  calloc(model->nnodes*ndim,sizeof(double));
-//        }
-//        model[i].force_vector            = (double *)  calloc(model->nnodes*ndim,sizeof(double));
-//        model[i].solution_vector         = (double *)  calloc(model->nnodes*ndim,sizeof(double));
-//    }
 
     for (i=0; i<nmodels; i++){
         model_alloc_matrices(&(model[i]));
         model_build_system(&(model[i]));
+        ierr = parallel_conjugate_gradient(&(model[i]), myid, numprocs, 1e-4, 20);
         // Printing initial data
         model_print(&(model[i]), 1, myid);
+//        for (j=0; j<1000000; j++){ /* Do Nothing! */}
+        for (j=0; j<model[i].nnodes; j++){
+            if (model[i].nodes[j].type == 1){
+                printf("Proc %i: %f %f %f\n", myid, model[i].nodes[j].xy[0],
+                                      model[i].nodes[j].xy[1],
+                                      model[i].interior_solution[model[i].nodes[j].local]);
+            }
+#ifdef _MPI
+            else if (model[i].nodes[j].type > 1){
+                printf("Proc %i: %f %f %f\n", myid, model[i].nodes[j].xy[0],
+                                      model[i].nodes[j].xy[1],
+                                      model[i].constrained_solution[model[i].nodes[j].local]);
+            }
+#endif
+        }
+    }
+    if (ierr == 0){
+        printf("\n\n\nWarning! CG iterations failed to converge!\n\n\n\n");
     }
 }
 
 /***********************************************************************************************************************************************************************/
 void main_finalize(MODEL_STRUCT *model, int nmodels, int myid, int numprocs)
 {
-
 //////////////////////////////////////////
 #ifdef _MPI
     MPI_Barrier(MPI_COMM_WORLD);

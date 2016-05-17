@@ -2,6 +2,7 @@
 list(APPEND solver_srcs
   # Insert new files below here, alphabetically
   tools.c
+  solver.c
   )
 list(REMOVE_DUPLICATES solver_srcs)
 

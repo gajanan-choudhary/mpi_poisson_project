@@ -29,3 +29,6 @@ void update(double *a /*Vector to be updated */, int numprocs, double *buf, NODE
 #endif
 
 double apply_dirichlet_bc(double, double);
+
+int parallel_conjugate_gradient(MODEL_STRUCT *model, int myid, int numprocs, double tol, int maxit);
+
