@@ -5,8 +5,8 @@
 #include <float.h>
 #include <time.h>
 #include <stdlib.h>
-#include <stddef.h>
-#include <limits.h>
+//#include <stddef.h>
+//#include <limits.h>
 
 /*Dimension of the problem*/
 #define ndim 2

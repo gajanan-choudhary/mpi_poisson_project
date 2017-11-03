@@ -1,15 +1,20 @@
 cmake_minimum_required(VERSION 2.8.10)
 
-set(CMAKE_C_COMPILER gcc)
 
-project(couple C)
+project(laplace C)
 
 option(USE_MPI "Use MPI!" OFF)
 if(USE_MPI)
     find_package(MPI)
     include_directories(SYSTEM ${MPI_INCLUDE_PATH})
-    set(CMAKE_C_COMPILER ${MPI_C_COMPILER})       ## WARNING!!!! THIS NEEDS TO BE CHECKED!!!
-    add_definitions(-D_MPI)
+    #set(CMAKE_C_COMPILER ${MPI_C_COMPILER})       ## WARNING!!!! THIS NEEDS TO BE CHECKED!!!
+    set(CMAKE_C_COMPILER mpicc)       ## WARNING!!!! THIS NEEDS TO BE CHECKED!!!
+
+    message("MPI_INCLUDE PATH: ${MPI_INCLUDE_PATH}")
+    message("CMAKE_C_COMPILER: ${CMAKE_C_COMPILER}")
+    add_definitions(-D_MPI -D_MESSG)
+elseif(USE_MPI)
+    set(CMAKE_C_COMPILER gcc)
 endif(USE_MPI)
 
 # Include Directory, needed for main/main.c
@@ -24,3 +29,6 @@ add_subdirectory(initio)
 add_subdirectory(solver)
 add_subdirectory(structs)
 add_subdirectory(main)
+if(USE_MPI)
+  add_subdirectory(messaging)
+endif(USE_MPI)

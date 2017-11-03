@@ -48,7 +48,7 @@ void model_build_system(MODEL_STRUCT *model)
 
     for (k = 0; k<model->nelems; k++){
         double area = elems[k].area;
-        double twoA = 2*area;
+        double twoA = 2.0*area;
         for (i=0; i<NDONTRI; i++){
             for (j=0; j<ndim; j++){
                 locxy[i][j] = nodes[elems[k].vertex[i]].xy[j];
@@ -106,6 +106,14 @@ void model_build_system(MODEL_STRUCT *model)
 void model_print(MODEL_STRUCT *model, int nmodels, int myid){
     int i, j, k;
     for (i=0;i<nmodels;i++){
+#ifdef _MESSG
+        message_barrier(MPI_COMM_WORLD);
+        int proc_count;
+        for(proc_count=0;proc_count<4;proc_count++){
+            if(proc_count==myid){
+                printf("***********myid %d",myid);
+#endif
+
         printf("\nProcessor %i: Model[%i] data below:\n", myid, i);
         printf("\tNumber of nodes    : %i\n\tNumber of elements : %i\n", model[i].nnodes, model[i].nelems);
 
@@ -172,6 +180,12 @@ void model_print(MODEL_STRUCT *model, int nmodels, int myid){
         }
 #endif
 */
+#ifdef _MESSG
+            }
+            message_barrier(MPI_COMM_WORLD);
+        }
+        //exit(-1);
+#endif
     }
 
 }

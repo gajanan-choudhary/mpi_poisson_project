@@ -42,10 +42,12 @@ int parallel_conjugate_gradient(MODEL_STRUCT *model, int myid, int numprocs, dou
 #endif
     for (i=0; i<IntNodes; i++){
         Pp[i] = Rp[i] = Fp[i];
+        Vp[i] = 0.0; /* gkc 2017 */
     }
 #ifdef _MPI
     for (i=0; i<IBNodes; i++){
         Ps[i] = Rs[i] = Fs[i];
+        Vs[i] = 0.0; /* gkc 2017 */
     }
 #endif
 /********************************************************************************************************************/
@@ -64,7 +66,7 @@ int parallel_conjugate_gradient(MODEL_STRUCT *model, int myid, int numprocs, dou
         return(1);
     }
     if (myid == 0){
-        printf("\n\nGamma = %f\n\n", GammaNew);
+        printf("\n\nGamma = % 23.15e\n\n", GammaNew);
     }
 /********************************************************************************************************************/
     for (k=0; k<maxit; k++){
@@ -120,6 +122,12 @@ int parallel_conjugate_gradient(MODEL_STRUCT *model, int myid, int numprocs, dou
         GammaOld = GammaNew;
 
 
+        if (myid == 0){
+            printf("\n\nGamma = % 23.15e (k = %d)\n\n", GammaNew, k);
+        }
+        if (GammaNew < tol*tol){
+            return(1);
+        }
 
 /*********************************************************************/
         GammaNew = inner_product(Rp, Rp, IntNodes
@@ -131,12 +139,6 @@ int parallel_conjugate_gradient(MODEL_STRUCT *model, int myid, int numprocs, dou
 
 
 
-        if (myid == 0){
-            printf("\n\nGamma = %f (k = %d)\n\n", GammaNew, k);
-        }
-        if (GammaNew < tol*tol){
-            return(1);
-        }
         beta = GammaNew/GammaOld;
         for (i=0; i<IntNodes; i++){
             Pp[i] = Rp[i]+beta*Pp[i];
