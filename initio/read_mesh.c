@@ -81,9 +81,22 @@ void read_mesh(MODEL_STRUCT **mod, int myid, int numprocs, char *model_name)
     }
 #endif
     fclose(partfile);
-    printf("Processor %i:\n\tInterior nodes = %i\n", myid, model->Interior_nodes);
-#ifdef _MPI
-    printf("\tInterior Boundary nodes = %10i\n", model->Interior_boundary_nodes);
+
+#ifdef _MESSG
+    message_barrier(MPI_COMM_WORLD);
+    int proc_count;
+    for(proc_count=0;proc_count<4;proc_count++){
+        if(proc_count==myid){
+            printf("\n" COLOR_RED "*********** Processor %d printing below:" COLOR_RESET, myid);
+            printf("\nProcessor %i:\n\tInterior nodes = %i\n", myid, model->Interior_nodes);
+            printf("\tInterior boundary nodes = %i\n", model->Interior_boundary_nodes);
+        }
+        message_barrier(MPI_COMM_WORLD);
+    }
     model->buf = (double *) malloc(sizeof(double) * maxcommon);
+    //exit(-1);
+#else
+    printf("\tInterior nodes = %i\n",  model->Interior_nodes);
 #endif
+
 }

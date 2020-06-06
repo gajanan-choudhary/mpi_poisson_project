@@ -1,77 +1,30 @@
 #include "global_header.h"
 
-static time_t time1, time2;    /* For total simulation time calculation */
+static int DEBUG = OFF;
 
 /***********************************************************************************************************************************************************************/
 /***********************************************************************************************************************************************************************/
 /***********************************************************************************************************************************************************************/
-int main(int argc, char *argv[])
+int unit_tests(
+#ifdef _MPI
+    int **neighbors,
+    int *common,
+    int npes,
+    int myid
+#endif
+)
 {
-    time(&time1);
-
-    int nmodels = 1;
-    int rank, world_size;
-#ifdef _MPI
-    MPI_Status status;
-    MPI_Init (&argc, &argv);    /* !!!!!!!!!!!! CHECK THIS !!!!!!!!!!!!!! */
-    MPI_Comm_size(MPI_COMM_WORLD, &world_size);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-#else
-    rank       = 0;
-    world_size = 1;
-#endif
-
-    if (argc < 2) {
-        if (rank == 0 ) {
-            printf("\nError: No command line arguments supplied!\n");
-            printf("Please enter the name of the model as a command line argument...\n");
-            printf("Terminating program run...\n");
-        }
-#ifdef _MPI
-        MPI_Abort(MPI_COMM_WORLD, -1);
-#endif
-        return(1);
-    }
-    else if (argc > 2) {
-        if (rank == 0 ) {
-            printf("\nError: Too many command line arguments supplied!\n");
-            printf("Please enter only name of the model as a command line argument...\n");
-            printf("Terminating program run...\n");
-        }
-#ifdef _MPI
-        MPI_Abort(MPI_COMM_WORLD, -1);
-#endif
-        return(1);
-    }
-    else {
-        if (rank == 0) {
-            printf("\n*****************************************************\n");
-            printf("Starting program run\n");
-            printf("*****************************************************\n");
-        }
-    }
-
-    // model data
-    MODEL_STRUCT *model = (MODEL_STRUCT *) malloc(sizeof(MODEL_STRUCT) * nmodels);
-
-    main_initialize(model, nmodels, argv[1], rank, world_size);
-
-    main_run(model, nmodels, rank, world_size);
-
-    main_finalize(model, nmodels, rank, world_size);
-
-    time(&time2);
-    if (rank == 0) {
-        printf("\n*****************************************************\n");
-        printf("Program ended successfully. Run time = %.3fs\n", difftime(time2,time1));
-        printf("*****************************************************\n");
-    }
+    int nfailures; /* Number of tests that failed. */
 
 #ifdef _MPI
-    MPI_Finalize();
+    /* Test if vectors are updated correctly in parallel. Suppose node 1 is shared with PE0 and PE1. */
+    /* If in parallel, PE0 has v={v1, v2}, and PE1 has v={v3, v4}, */
+    /* then in serial, the corresponding correct vector would be v={v1, v2+v3, v4}^T, */
+    /* and the vectors after updates should be PE0: v={v1, v2+v3}, and PE1: v={v2+v3, v4}^T. */
+    
+    
 #endif
-
-    return (0);
+    return (nfailures);
 }
 /***********************************************************************************************************************************************************************/
 /***********************************************************************************************************************************************************************/
@@ -81,9 +34,10 @@ int main(int argc, char *argv[])
 
 
 /***********************************************************************************************************************************************************************/
-void main_initialize(MODEL_STRUCT *model, int nmodels, char *model_name, int myid, int numprocs)
+void test_update_double(MODEL_STRUCT *model, int myid, int numprocs)
 {
     int i;
+    //double *v=model->Fs;
     if (myid == 0){
         printf("\n*****************************************************\n");
         printf("Main initializing\n");
@@ -93,9 +47,7 @@ void main_initialize(MODEL_STRUCT *model, int nmodels, char *model_name, int myi
     if (myid == 0){
         printf("Reading input\n");
     }
-    for (i=0; i<nmodels; i++){
-        read_mesh(&(model), myid, numprocs, model_name);
-    }
+    //update(v /*Vector to be updated */, numprocs, model->buf, model->nodes, model->neighbors, model->common);
 }
 
 /***********************************************************************************************************************************************************************/

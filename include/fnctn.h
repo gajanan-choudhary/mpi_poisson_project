@@ -9,6 +9,13 @@ void elem_calc_areas(ELEMENT_STRUCT *, NODE_STRUCT *, int);
 /*initio */
 void read_mesh(MODEL_STRUCT **, int, int, char *);
 void partition_mesh(NODE_STRUCT *, ELEMENT_STRUCT *, char *, int);
+#ifdef _MPI
+void print_vector_double(const char *, double *, int, double *, int, int, int);
+void print_stiffness_matrix(double **, int, double **, double **, int, int);
+#else
+void print_vector_double(const char *, double *, int, int, int);
+void print_stiffness_matrix(double **, int, int);
+#endif
 
 /* solver */
 double inner_product(

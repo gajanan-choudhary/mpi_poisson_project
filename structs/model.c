@@ -36,14 +36,14 @@ void model_build_system(MODEL_STRUCT *model)
     double locxy[NDONTRI][ndim];
 
     // Assigning pointers for convenience
-    NODE_STRUCT *nodes;              nodes = model->nodes;
-    ELEMENT_STRUCT *elems;           elems = model->elems;
-    double **IS;                     IS    = model->interior_stiffness;
-    double *IF;                      IF    = model->interior_forcing;
+    NODE_STRUCT *nodes = model->nodes;
+    ELEMENT_STRUCT *elems = model->elems;
+    double **IS = model->interior_stiffness;
+    double *IF = model->interior_forcing;
 #ifdef _MPI
-    double **IAS;                    IAS   = model->interaction_stiffness;
-    double **CS;                     CS    = model->constrained_stiffness;
-    double *CF;                      CF    = model->constrained_forcing;
+    double **IAS = model->interaction_stiffness;
+    double **CS = model->constrained_stiffness;
+    double *CF = model->constrained_forcing;
 #endif
 
     for (k = 0; k<model->nelems; k++){
@@ -111,75 +111,40 @@ void model_print(MODEL_STRUCT *model, int nmodels, int myid){
         int proc_count;
         for(proc_count=0;proc_count<4;proc_count++){
             if(proc_count==myid){
-                printf("***********myid %d",myid);
+                printf("\n" COLOR_RED "*********** Processor %d printing below:" COLOR_RESET, myid);
 #endif
 
         printf("\nProcessor %i: Model[%i] data below:\n", myid, i);
         printf("\tNumber of nodes    : %i\n\tNumber of elements : %i\n", model[i].nnodes, model[i].nelems);
 
         printf("\tProcessor %i: Node Data\n", myid);
-        printf("\t\t|   Node    |   Type    |     X coordinate     |     Y coordinate     |\n");
+        printf("\t\t|   Node    |   Type    |      X coordinate      |      Y coordinate      |\n");
         for (j=0;j<model[i].nnodes;j++){
-            printf("\t\t| %10i| %10i| %.15e| %.15e|\n", j, model[i].nodes[j].type,
+            printf("\t\t| % 10i| % 10i|  % .15e|  % .15e|\n", j, model[i].nodes[j].type,
                                     model[i].nodes[j].xy[0], model[i].nodes[j].xy[1]);
         }
 
-        printf("\tProcesssor %i:Element Data\n", myid);
-        printf("\t\t|  Element  | Vertex 0  | Vertex 1  | Vertex 2  |         Area         | Processor |\n");
+        printf("\tProcesssor %i: Element Data\n", myid);
+        printf("\t\t|  Element  | Vertex 0  | Vertex 1  | Vertex 2  |          Area          | Processor |\n");
         for (j=0;j<model[i].nelems;j++){
-            printf("\t\t| %10i| %10i| %10i| %10i| %.15e| %10i|\n", j,
+            printf("\t\t| % 10i| % 10i| % 10i| % 10i|  % .15e| % 10i|\n", j,
                 model[i].elems[j].vertex[0], model[i].elems[j].vertex[1], model[i].elems[j].vertex[2],
                                                   model[i].elems[j].area, model[i].elems[j].procnum);
         }
 
-        printf("\tProcessor %i: interior_stiffness (matrix):\n", myid);
-        for (j=0;j<model[i].Interior_nodes;j++){
-            printf("Row %10i:", j);
-            for (k=0;k<model[i].Interior_nodes;k++){
-                printf("\t%.4e", model[i].interior_stiffness[j][k]);
-            }
-            printf("\n");
-        }
 #ifdef _MPI
-        printf("\tProcessor %i: interaction_stiffness (matrix):\n", myid);
-        for (j=0;j<model[i].Interior_nodes;j++){
-            printf("Row %10i:", j);
-            for (k=0;k<model[i].Interior_boundary_nodes;k++){
-                printf("\t%.4e", model[i].interaction_stiffness[j][k]);
-            }
-            printf("\n");
-        }
+        print_stiffness_matrix(model[i].interior_stiffness, model[i].Interior_nodes,
+            model[i].interaction_stiffness, model[i].constrained_stiffness, model[i].Interior_boundary_nodes, myid);
+        print_vector_double("Forcing", model[i].interior_forcing, model[i].Interior_nodes,
+            model[i].constrained_forcing, model[i].Interior_boundary_nodes, myid,1);
+        print_vector_double("Solution", model[i].interior_solution, model[i].Interior_nodes,
+            model[i].constrained_solution, model[i].Interior_boundary_nodes, myid,1);
+#else
+        print_stiffness_matrix(model[i].interior_stiffness, model[i].Interior_nodes, myid);
+        print_vector_double("Forcing", model[i].interior_forcing, model[i].Interior_nodes,myid,1);
+        print_vector_double("Solution", model[i].interior_solution, model[i].Interior_nodes,myid,1);
+#endif
 
-        printf("\tProcessor %i: constrained_stiffness (matrix):\n", myid);
-        for (j=0;j<model[i].Interior_boundary_nodes;j++){
-            printf("Row %10i:", j);
-            for (k=0;k<model[i].Interior_boundary_nodes;k++){
-                printf("\t%.4e", model[i].constrained_stiffness[j][k]);
-            }
-            printf("\n");
-        }
-#endif
-        printf("\tProcessor %i: interior_forcing (vector):\n", myid);
-        for (j=0;j<model[i].Interior_nodes; j++){
-            printf("Row %10i:\t%.4e\n", j, model[i].interior_forcing[j]);
-        }
-#ifdef _MPI
-        printf("\tProcessor %i: constrained_forcing (vector):\n", myid);
-        for (j=0;j<model[i].Interior_boundary_nodes; j++){
-            printf("Row %10i:\t%.4e\n", j, model[i].constrained_forcing[j]);
-        }
-#endif
-/*        printf("\tProcessor %i: interior_solution (vector):\n", myid);
-        for (j=0;j<model[i].Interior_nodes; j++){
-            printf("Row %10i:\t%.4e\n", j, model[i].interior_solution[j]);
-        }
-#ifdef _MPI
-        printf("\tProcessor %i: constrained_solution (vector):\n", myid);
-        for (j=0;j<model[i].Interior_boundary_nodes; j++){
-            printf("Row %10i:\t%.4e\n", j, model[i].constrained_solution[j]);
-        }
-#endif
-*/
 #ifdef _MESSG
             }
             message_barrier(MPI_COMM_WORLD);

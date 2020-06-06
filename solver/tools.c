@@ -24,10 +24,8 @@ double inner_product(
         inner_product_local += (vect1_interiorboundary[i] * vect2_interiorboundary[i]) / shared[i];
     }
     MPI_Allreduce(&inner_product_local, &inner_product_final, 1, MPI_DOUBLE, MPI_SUM, MPI_COMM_WORLD);
-    return (inner_product_final);
-#else
-    return (inner_product_local);
 #endif
+    return (inner_product_final);
 }
 
 /******************************************************************************************************************/

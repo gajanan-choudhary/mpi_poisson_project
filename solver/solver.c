@@ -2,20 +2,18 @@
 
 int parallel_conjugate_gradient(MODEL_STRUCT *model, int myid, int numprocs, double tol, int maxit)
 {
+    tol *= tol; /* Actual tolerance, since we will compare with the square of the residual norm. */
+
+    int i, j, k;
     double **Ap, *Fp, *Vp;
     double *Rp, *Pp,*Qp;
+    double GammaOld, GammaNew, tau, alpha, beta;
     int IntNodes = model->Interior_nodes;
     Ap = model->interior_stiffness;
     Fp = model->interior_forcing;
     Vp = model->interior_solution;
-    double GammaOld, GammaNew, tau, alpha, beta;
-    int i, j, k;
     NODE_STRUCT *nodes = model->nodes;
     ELEMENT_STRUCT *element = model->elems;
-    Pp = (double *) calloc(sizeof(double) , IntNodes);
-    Qp = (double *) calloc(sizeof(double) , IntNodes);
-    Rp = (double *) calloc(sizeof(double) , IntNodes);
-
 
 
 #ifdef _MPI
@@ -30,10 +28,19 @@ int parallel_conjugate_gradient(MODEL_STRUCT *model, int myid, int numprocs, dou
     As = model->constrained_stiffness;
     Fs = model->constrained_forcing;
     Vs = model->constrained_solution;
-    Ps = (double *) calloc(sizeof(double) , IBNodes);
-    Qs = (double *) calloc(sizeof(double) , IBNodes);
-    Rs = (double *) calloc(sizeof(double) , IBNodes);
 #endif
+
+    /* Allocate temporary variables. */
+    Pp = calloc(sizeof(double), IntNodes);
+    Qp = calloc(sizeof(double), IntNodes);
+    Rp = calloc(sizeof(double), IntNodes);
+
+#ifdef _MPI
+    Ps = calloc(sizeof(double), IBNodes);
+    Qs = calloc(sizeof(double), IBNodes);
+    Rs = calloc(sizeof(double), IBNodes);
+#endif
+
 
 
 /********************************************************************************************************************/
@@ -60,13 +67,22 @@ int parallel_conjugate_gradient(MODEL_STRUCT *model, int myid, int numprocs, dou
                             );
 /*********************************************************************/
 
+    print_vector_double("Forcing before CG", Fp, IntNodes,
+#ifdef _MPI
+                                    Fs, IBNodes,
+#endif
+                                    myid, 2);
+    print_vector_double("Solution before CG", Vp, IntNodes,
+#ifdef _MPI
+                                    Vs, IBNodes,
+#endif
+                                    myid, 2);
 
-
-    if (GammaNew < tol*tol){
+    if (GammaNew < tol){
         return(1);
     }
     if (myid == 0){
-        printf("\n\nGamma = % 23.15e\n\n", GammaNew);
+        printf("\nBefore starting CG iterations: Gamma = % 14.6e\n", GammaNew);
     }
 /********************************************************************************************************************/
     for (k=0; k<maxit; k++){
@@ -123,9 +139,14 @@ int parallel_conjugate_gradient(MODEL_STRUCT *model, int myid, int numprocs, dou
 
 
         if (myid == 0){
-            printf("\n\nGamma = % 23.15e (k = %d)\n\n", GammaNew, k);
+            printf("\nIteration % 4i, Gamma = % 14.6e", k, GammaNew);
         }
-        if (GammaNew < tol*tol){
+        if (GammaNew < tol){
+            print_vector_double("Solution", Vp, IntNodes,
+#ifdef _MPI
+                                Vs, IBNodes,
+#endif
+                                myid, 2);
             return(1);
         }
 
@@ -149,5 +170,11 @@ int parallel_conjugate_gradient(MODEL_STRUCT *model, int myid, int numprocs, dou
         }
 #endif
     }
+    
+    free(Pp); free(Qp); free(Rp);
+#ifdef _MPI
+    free(Ps); free(Qs); free(Rs);
+#endif
+
     return(0);  // This means conjugate iterations have failed to converge
 }

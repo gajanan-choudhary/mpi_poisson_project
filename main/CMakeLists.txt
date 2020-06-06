@@ -6,7 +6,7 @@ list(APPEND main_sources
 # Add main as build target
 add_executable(laplace ${main_sources})
 
-list(APPEND lib_depends structs initio solver)
+list(APPEND lib_depends structs initio solver tests)
 
 if(USE_MPI)
 #    find_package(MPI)
